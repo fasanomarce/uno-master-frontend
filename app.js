@@ -39,17 +39,17 @@ let pendingCardIndex = null;
 // 3. MAPEADOR DE IMÁGENES INTEGRADO Y ROBUSTO (Con barras iniciales "/")
 // =============================================================================
 function getCardImagePath(card) {
-    if (!card) return '/assets/card_back.png';
+    if (!card) return 'assets/card_back.png';
 
     const valorStr = String(card.value);
     const colorStr = String(card.color);
 
     // Comodines
     if (colorStr.includes('Comodín') || valorStr.includes('Color')) {
-        return '/assets/Wild_ChangeColor.png';
+        return 'assets/Wild_ChangeColor.png';
     }
     if (valorStr.includes('+4')) {
-        return '/assets/Wild_DrawFour.png';
+        return 'assets/Wild_DrawFour.png';
     }
 
     // Colores base
@@ -69,7 +69,7 @@ function getCardImagePath(card) {
         valueEnglish = numeros[valorStr] || 'Zero';
     }
 
-    return `/assets/${colorEnglish}_${valueEnglish}.png`;
+    return `assets/${colorEnglish}_${valueEnglish}.png`;
 }
 
 // =============================================================================
