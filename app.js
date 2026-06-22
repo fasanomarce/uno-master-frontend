@@ -39,7 +39,7 @@ let pendingCardIndex = null;
 // 3. MAPEADOR DE IMÁGENES INTEGRADO Y ROBUSTO (Con barras iniciales "/")
 // =============================================================================
 function getCardImagePath(card) {
-    if (!card) return 'assets/card_back.png';
+    if (!card) return 'assets/Card_Back.png';
 
     const valorStr = String(card.value);
     const colorStr = String(card.color);
