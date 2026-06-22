@@ -1,0 +1,93 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Juego UNO - Sala de Espera y Tablero</title>
+    <link rel="stylesheet" href="style.css">
+</head>
+<body>
+
+    <div id="game-container">
+        
+        <div id="login-screen" class="screen">
+            <div class="card-panel">
+                <h1>¡Bienvenido a UNO!</h1>
+                <p>Introduce tu nombre para unirte a la partida (Máx. 4 jugadores)</p>
+                <div class="form-group">
+                    <input type="text" id="username-input" placeholder="Tu nombre o Nickname" maxlength="15">
+                    <button id="btn-join">Unirse a la Sala</button>
+                </div>
+                <p id="login-error" class="hidden" style="color: #ff5555; font-weight: bold; margin-top: 10px;"></p>
+            </div>
+        </div>
+
+        <div id="waiting-screen" class="screen hidden">
+            <div class="card-panel">
+                <h2>Sala de Espera</h2>
+                <div class="spinner"></div>
+                <p>Esperando a que se conecten los 4 jugadores reglamentarios...</p>
+                <ul id="players-list">
+                    </ul>
+            </div>
+        </div>
+
+        <div id="game-board" class="screen hidden">
+            <div class="status-bar">
+                <div>Sentido: <span id="game-direction" class="highlight">Derecha</span> ➡️</div>
+                <div>Turno de: <span id="current-turn-name" class="highlight">-</span></div>
+            </div>
+
+            <div class="log-container" id="game-log">
+                <p class="log-entry">El juego ha comenzado. ¡Buena suerte!</p>
+            </div>
+
+            <div class="center-play-area">
+                <div id="deck-pile" class="card-slot clickable">
+                    <img src="/assets/card_back.png" alt="Mazo de robo">
+                    <span class="action-label">Robar</span>
+                </div>
+
+                <div id="discard-pile" class="card-slot">
+                    <img id="top-card-img" src="/assets/card_back.png" alt="Carta mesa">
+                </div>
+            </div>
+
+            <div id="uno-actions-panel" class="uno-buttons hidden">
+                <button id="btn-cantar-uno" class="btn-uno">¡CANTAR UNO!</button>
+                <button id="btn-cantar-corte" class="btn-corte">¡CORTE!</button>
+            </div>
+
+            <div class="player-hand-container">
+                <h3>Tu Mano de Cartas</h3>
+                <div id="player-hand" class="hand-grid">
+                    </div>
+            </div>
+        </div>
+
+    </div>
+
+    <div id="color-picker-modal" class="modal hidden">
+        <div class="modal-content">
+            <h2>Elige un Color</h2>
+            <p>Selecciona el color que dominará la mesa:</p>
+            <div class="color-options-grid">
+                <button class="color-btn red" data-color="Rojo">Rojo</button>
+                <button class="color-btn blue" data-color="Azul">Azul</button>
+                <button class="color-btn green" data-color="Verde">Verde</button>
+                <button class="color-btn yellow" data-color="Amarillo">Amarillo</button>
+            </div>
+        </div>
+    </div>
+
+    <div id="penalty-modal" class="modal hidden">
+        <div class="modal-content alert">
+            <h2>¡Aviso del Juego!</h2>
+            <p id="penalty-message">Has recibido una penalización.</p>
+            <button id="btn-resolve-popup" class="btn-alert-confirm">Entendido</button>
+        </div>
+    </div>
+
+    <script src="app.js"></script>
+</body>
+</html>

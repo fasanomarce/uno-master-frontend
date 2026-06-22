@@ -1,0 +1,365 @@
+/* ==========================================
+   1. VARIABLES GLOBALES Y RESET
+   ========================================== */
+:root {
+    --bg-main: #141419;
+    --bg-panel: #1f1f27;
+    --uno-red: #ff5555;
+    --uno-blue: #5555ff;
+    --uno-green: #55aa55;
+    --uno-yellow: #ffaa00;
+    --text-color: #f5f5f7;
+    --text-muted: #a0a0ab;
+    --border-radius: 12px;
+    --transition: all 0.25s ease;
+}
+
+* {
+    margin: 0;
+    padding: 0;
+    box-sizing: border-box;
+    font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+}
+
+body {
+    background-color: var(--bg-main);
+    color: var(--text-color);
+    min-height: 100vh;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    overflow-x: hidden;
+}
+
+.hidden {
+    display: none !important;
+}
+
+/* ==========================================
+   2. CONTENEDOR PRINCIPAL Y PANTALLAS INICIALES
+   ========================================== */
+#game-container {
+    width: 100vw;
+    height: 100vh;
+    max-width: 1200px;
+    max-height: 900px;
+    padding: 20px;
+    display: flex;
+    flex-direction: column;
+}
+
+.screen {
+    width: 100%;
+    height: 100%;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+}
+
+.card-panel {
+    background-color: var(--bg-panel);
+    padding: 40px;
+    border-radius: var(--border-radius);
+    box-shadow: 0 10px 30px rgba(0, 0, 0, 0.5);
+    text-align: center;
+    max-width: 450px;
+    width: 100%;
+    border: 1px solid #2f2f3d;
+}
+
+.card-panel h1, .card-panel h2 {
+    margin-bottom: 15px;
+    color: var(--uno-yellow);
+}
+
+.form-group {
+    margin: 25px 0;
+    display: flex;
+    flex-direction: column;
+    gap: 15px;
+}
+
+input[type="text"] {
+    background-color: #141419;
+    border: 2px solid #2f2f3d;
+    padding: 12px;
+    border-radius: 8px;
+    color: white;
+    font-size: 16px;
+    text-align: center;
+    outline: none;
+    transition: var(--transition);
+}
+
+input[type="text"]:focus {
+    border-color: var(--uno-blue);
+    box-shadow: 0 0 10px rgba(85, 85, 255, 0.3);
+}
+
+button {
+    background-color: var(--uno-red);
+    color: white;
+    border: none;
+    padding: 12px 24px;
+    font-size: 16px;
+    font-weight: bold;
+    border-radius: 8px;
+    cursor: pointer;
+    transition: var(--transition);
+}
+
+button:hover {
+    transform: translateY(-2px);
+    filter: brightness(1.1);
+}
+
+#players-list {
+    list-style: none;
+    margin-top: 20px;
+    text-align: left;
+}
+
+#players-list li {
+    background: #141419;
+    padding: 10px 15px;
+    margin-bottom: 8px;
+    border-radius: 6px;
+    border-left: 4px solid var(--uno-green);
+}
+
+.spinner {
+    width: 40px;
+    height: 40px;
+    border: 4px solid rgba(255,255,255,0.1);
+    border-top-color: var(--uno-yellow);
+    border-radius: 50%;
+    animation: spin 1s linear infinite;
+    margin: 20px auto;
+}
+
+@keyframes spin {
+    to { transform: rotate(360deg); }
+}
+
+/* ==========================================
+   3. TABLERO DE JUEGO (GAME BOARD)
+   ========================================== */
+#game-board {
+    display: grid;
+    grid-template-rows: auto auto 1fr auto auto;
+    gap: 15px;
+    height: 100%;
+}
+
+.status-bar {
+    display: flex;
+    justify-content: space-between;
+    background-color: var(--bg-panel);
+    padding: 12px 20px;
+    border-radius: var(--border-radius);
+    font-weight: bold;
+}
+
+.highlight {
+    color: var(--uno-yellow);
+}
+
+.log-container {
+    background-color: #0d0d11;
+    border: 1px solid #2f2f3d;
+    padding: 10px;
+    border-radius: 8px;
+    height: 60px;
+    overflow-y: auto;
+    font-size: 14px;
+    color: var(--text-muted);
+}
+
+.log-entry {
+    animation: fadeIn 0.3s ease;
+}
+
+.center-play-area {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    gap: 40px;
+    margin: 20px 0;
+}
+
+.card-slot {
+    width: 130px;
+    height: 190px;
+    position: relative;
+    perspective: 1000px;
+}
+
+.card-slot img {
+    width: 100%;
+    height: 100%;
+    object-fit: contain;
+    filter: drop-shadow(0 8px 15px rgba(0,0,0,0.5));
+    border-radius: 10px;
+}
+
+.clickable {
+    cursor: pointer;
+    transition: var(--transition);
+}
+
+.clickable:hover {
+    transform: scale(1.05);
+}
+
+.action-label {
+    position: absolute;
+    bottom: -25px;
+    left: 50%;
+    transform: translateX(-50%);
+    font-size: 12px;
+    text-transform: uppercase;
+    letter-spacing: 1px;
+    color: var(--text-muted);
+}
+
+/* ==========================================
+   4. MANO DE CARTAS DEL JUGADOR
+   ========================================== */
+.player-hand-container {
+    background-color: var(--bg-panel);
+    padding: 15px;
+    border-radius: var(--border-radius);
+    border: 1px solid #2f2f3d;
+}
+
+.player-hand-container h3 {
+    font-size: 14px;
+    color: var(--text-muted);
+    margin-bottom: 10px;
+}
+
+.hand-grid {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    flex-wrap: wrap;
+    gap: 10px;
+    min-height: 150px;
+    padding: 10px 0;
+}
+
+.hand-grid img {
+    width: 95px;
+    height: 140px;
+    object-fit: contain;
+    cursor: pointer;
+    transition: transform 0.2s cubic-bezier(0.175, 0.885, 0.32, 1.275), filter 0.2s;
+    filter: drop-shadow(0 4px 8px rgba(0,0,0,0.4));
+}
+
+.hand-grid img:hover {
+    transform: translateY(-25px) scale(1.1);
+    filter: drop-shadow(0 15px 20px rgba(0,0,0,0.6)) brightness(1.05);
+    z-index: 10;
+}
+
+/* ==========================================
+   5. BOTONERA ESPECIAL (UNO / CORTE)
+   ========================================== */
+.uno-buttons {
+    display: flex;
+    justify-content: center;
+    gap: 20px;
+    animation: bounceIn 0.4s ease;
+}
+
+.btn-uno {
+    background-color: var(--uno-yellow);
+    color: #000;
+    font-size: 18px;
+    padding: 15px 35px;
+    box-shadow: 0 0 15px rgba(255, 170, 0, 0.4);
+}
+
+.btn-corte {
+    background-color: var(--uno-red);
+    font-size: 18px;
+    padding: 15px 35px;
+    box-shadow: 0 0 15px rgba(255, 85, 85, 0.4);
+}
+
+/* ==========================================
+   6. VENTANAS MODALES FLOJAS (OVERLAYS)
+   ========================================== */
+.modal {
+    position: fixed;
+    top: 0;
+    left: 0;
+    width: 100vw;
+    height: 100vh;
+    background-color: rgba(0, 0, 0, 0.75);
+    backdrop-filter: blur(5px);
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    z-index: 100;
+    animation: fadeIn 0.2s ease;
+}
+
+.modal-content {
+    background-color: var(--bg-panel);
+    padding: 30px;
+    border-radius: var(--border-radius);
+    text-align: center;
+    border: 2px solid #2f2f3d;
+    max-width: 400px;
+    width: 90%;
+}
+
+.color-options-grid {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: 15px;
+    margin-top: 20px;
+}
+
+.color-btn {
+    border: none;
+    height: 60px;
+    border-radius: 8px;
+    font-weight: bold;
+    font-size: 16px;
+    cursor: pointer;
+    color: white;
+    text-shadow: 0 2px 4px rgba(0,0,0,0.5);
+}
+
+.color-btn.red { background-color: var(--uno-red); }
+.color-btn.blue { background-color: var(--uno-blue); }
+.color-btn.green { background-color: var(--uno-green); }
+.color-btn.yellow { background-color: var(--uno-yellow); color: black; text-shadow: none; }
+
+.modal-content.alert h2 {
+    color: var(--uno-red);
+    margin-bottom: 10px;
+}
+
+.btn-alert-confirm {
+    background-color: var(--uno-blue);
+    margin-top: 20px;
+    width: 100%;
+}
+
+/* ==========================================
+   7. ANIMACIONES ANIMADAS
+   ========================================== */
+@keyframes fadeIn {
+    from { opacity: 0; }
+    to { opacity: 1; }
+}
+
+@keyframes bounceIn {
+    0% { transform: scale(0.8); opacity: 0; }
+    70% { transform: scale(1.05); }
+    100% { transform: scale(1); opacity: 1; }
+}
